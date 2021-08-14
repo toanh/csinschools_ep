@@ -1,0 +1,205 @@
+<html>
+<head>
+  <title>CS in Schools Vimeo Player</title>
+  <style type="text/css" media="screen">
+        .sk-chase {
+          width: 80px;
+          height: 80px;
+          position: absolute;
+          animation: sk-chase 2.5s infinite linear both;
+          top: calc(50% - 40px);
+          left: calc(50% - 40px);
+        }
+        .sk-chase-dot {
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          left: 0;
+          top: 0; 
+          animation: sk-chase-dot 2.0s infinite ease-in-out both; 
+        }
+        .sk-chase-dot:before {
+          content: '';
+          display: block;
+          width: 25%;
+          height: 25%;
+          background-color: #00f;
+          border-radius: 100%;
+          animation: sk-chase-dot-before 2.0s infinite ease-in-out both; 
+        }
+        .sk-chase-dot:nth-child(1) { animation-delay: -1.1s; }
+        .sk-chase-dot:nth-child(2) { animation-delay: -1.0s; }
+        .sk-chase-dot:nth-child(3) { animation-delay: -0.9s; }
+        .sk-chase-dot:nth-child(4) { animation-delay: -0.8s; }
+        .sk-chase-dot:nth-child(5) { animation-delay: -0.7s; }
+        .sk-chase-dot:nth-child(6) { animation-delay: -0.6s; }
+        .sk-chase-dot:nth-child(1):before { animation-delay: -1.1s; }
+        .sk-chase-dot:nth-child(2):before { animation-delay: -1.0s; }
+        .sk-chase-dot:nth-child(3):before { animation-delay: -0.9s; }
+        .sk-chase-dot:nth-child(4):before { animation-delay: -0.8s; }
+        .sk-chase-dot:nth-child(5):before { animation-delay: -0.7s; }
+        .sk-chase-dot:nth-child(6):before { animation-delay: -0.6s; }
+        @keyframes sk-chase {
+          100% { transform: rotate(360deg); } 
+        }
+        @keyframes sk-chase-dot {
+          80%, 100% { transform: rotate(360deg); } 
+        }
+        @keyframes sk-chase-dot-before {
+          50% {
+            transform: scale(0.4); 
+          } 100%, 0% {
+            transform: scale(1.0); 
+          } 
+        }    
+    </style>
+</head>
+<body onload="enableVimeo()">
+  <div id = "controls" style = "text-align: center;">
+    <input type="button" id="prev" value="<< Prev" onclick="prevSlide();">
+    <!--<input type="button" id="play_pause" value="Play" onclick="play_pause();">-->
+    <input type="button" id="next" value="Next >>" onclick="nextSlide();">
+  </div>
+  <div id = "playerContainter" style = "text-align: center;" width = "1024" height = "720">
+  <div id="spinner" class="sk-chase">
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+    <div class="sk-chase-dot"></div>
+  </div>    
+  <div id="vimeoplayer"></div>
+  <!--<iframe src="https://player.vimeo.com/video/587069589?autoplay=1&muted=1" width="100%"  height = "100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>-->
+  </div>
+  <script src="https://player.vimeo.com/api/player.js"></script>
+  <script>
+    urlParams = new URLSearchParams(window.location.search);  
+    var times = null;
+    times = urlParams.get('times');
+    if (times === null)
+    {
+      times = [0];
+    }
+    else
+    {
+      times = times.split(",");
+    }
+
+    var iframe = document.querySelector('iframe');
+    var spinner = document.getElementById("spinner");
+    var player = null;
+    
+    spinner.style.display= "none";
+
+    function enableVimeo()
+    {
+      var vid = null;
+      vid = urlParams.get('id');
+      if (vid === null)
+      {
+        vid = "587069589";
+      }      
+      var options = {
+        id: vid,
+        autoplay: true,
+        muted: true,
+      };
+
+      player = new Vimeo.Player('vimeoplayer', options);
+
+      player.pause().then(function() {
+        playerIFrame = document.getElementsByTagName("iframe");
+        playerIFrame[0].style.width = "100%";
+        playerIFrame[0].style.height = "100%";        
+      });
+      player.on('play', function() {
+        player.getVolume().then(function(volume) {
+          player.setVolume(1.0);
+        });
+      });      
+    }
+    var play = true;
+    function play_pause()
+    {
+      if (play)
+      {
+        player.play().then(function()
+        {
+          play = false;
+          document.getElementById("play_pause").value = "Pause";
+        });
+      }
+      else
+      {
+        player.pause().then(function()
+        {
+          play = true;
+          document.getElementById("play_pause").value = "Play";
+        });
+      }
+    }        
+
+    function getPrevTimeMark(currentTime)
+    {
+      for (i = times.length - 1; i >= 0 ; i--)
+      {
+        if (currentTime > times[i])
+        {
+          return times[i];
+        }
+      }
+      return -1;
+    }    
+
+    function getNextTimeMark(currentTime)
+    {
+      for (i = 0; i < times.length; i++)
+      {
+        if (currentTime < times[i])
+        {
+          return times[i];
+        }
+      }
+      return -1;
+    }       
+
+    function gotoSlideTime(time)
+    {
+      spinner.style.display= "block";
+      player.setCurrentTime(time).then(function(seconds)
+      {
+        spinner.style.display= "none";
+      });
+      player.pause();
+    }
+
+    function nextSlide()
+    {
+      var currentTime;
+      player.getCurrentTime().then(function(seconds) {
+        currentTime = seconds;
+        slideTimeMark = getNextTimeMark(currentTime);
+        if (slideTimeMark != -1)
+        {
+          gotoSlideTime(slideTimeMark);
+        }
+      });      
+    }
+
+    function prevSlide()
+    {
+      var currentTime;
+      player.getCurrentTime().then(function(seconds) {
+        currentTime = seconds;
+        slideTimeMark = getPrevTimeMark(currentTime);
+        if (slideTimeMark != -1)
+        {
+          gotoSlideTime(slideTimeMark);
+        }
+      });      
+    }
+  </script>
+
+</body>
+</html>

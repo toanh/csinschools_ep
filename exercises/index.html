@@ -1,0 +1,46 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <style type="text/css" media="screen">
+    </style>    
+    <script>
+        function getURL() {
+          return "https://ep.kienhuynh.repl.co/editor.html?display=top&nostep=1&nosave=1&nofs=1&code=%E7%8D%A4%E6%99%A3%E6%A9%AB%E7%9D%A5%E0%A8%B3%E3%88%B4%E3%8C%B2%E0%A8%80"
+            //return "../editor.html?display=top&name=zach&code=⌠周攠晩牳琠獭楬敹⁦慣攠桡猠慬牥慤礠扥敮⁣潤敤⁦潲⁹潵⸠奯甠摯⁮潴⁮敥搠瑯⁣桡湧攠慮礠捯摥⁯渠瑨楳⁦楲獴⁳浩汥礠晡捥ℊੰ物湴⠢†††††⸭幞幞幞席⸢⤊灲楮琨∠†††‮怠†††††怮∩ੰ物湴⠢††† †‮†††⸠†⁠∩ੰ物湴⠢†††㨠††††††††㨢⤊灲楮琨∠††⁼††††††††⁼∩ੰ物湴⠢†††㨠†尠††† ††㨢⤊灲楮琨∠†††尠†怮彟彟⹠††⼢⤊灲楮琨∠†††⁠⸠†††††⹠∩ੰ物湴⠢†††††怭⹟彟彟⸭怢⤊ਊ⌠䙩汬⁩渠瑨攠扬慮歳Ⱐ獨潷渠慳 彟彟彟张扥汯眠瑯⁷慩琠景爠瑨攠畳敲⁴漠灲敳猠孅湴敲崮ਣ⁈楮琺⁙潵⁷楬氠湥敤⁴漠畳攠瑨攠楮灵琨⤠捯浭慮搡ਊ彟彟彟彟⠢偲敳猠孅乔䕒崠瑯⁢汩湫™⤊ਣ⁆楮楳栠潦映瑨攠牥浡楮摥爠潦⁴桥⁰物湴⁳瑡瑥浥湴猠瑯⁣牥慴攠瑨攠獥捯湤⁳浩汥礠晡捥⸊⌠䡩湴㨠剥浥浢敲⁴漠捨慮来⁴桥⁥祥猠慮搠瑨攠浯畴校ਊ灲楮琨∠††††‮ⵞ幞幞幞⴮∩ੰ物湴⠢††††⹠†††††⁠⸢⤊灲楮琨∠†††⼠†张††•⤊"
+        }        
+        function enableEditor() {
+            var editor = document.getElementById("editor");
+            editor.src = getURL();
+            editor.onload = function() {
+              editor.style.display = "block";
+              document.getElementById("spinner").style.display= "none";
+              editor.onload = null;
+            };
+        }
+    </script>    
+  </head>
+ <body onload="enableEditor()">
+   <div style="width:100%">
+    <div class = "titlebar">
+      <div style="display:flex; align-items: center; justify-content: center; margin: 5px auto">
+          <img class="logo-image" src = "../images/robot.gif"/>
+          <img class="logo-image" src = "../images/text.png""/>            
+      </div>        
+    </div>
+    <div style="margin: auto; width: 800px;">
+      <div class="rendered-markdown jsx-3336317089"><h1>Instructions</h1><p>In this exercise you will be writing code to draw two smiley faces. The first smiley face has already been coded for you.</p><h2>Your Task</h2><p>In the file <code>main.py</code>, fill in the blanks so that the program displays a smiley face on the screen, waits for the user to press <code>ENTER</code>, and then prints a second smiley face with different eyes and a different mouth.</p><h2>Requirements</h2><ul><li>The program should run without any errors.</li><li>The program should display the first smiley face, then wait for the user to press <code>ENTER</code>. Once the user presses <code>ENTER</code>, it should display the second smiley face.</li><li>The second smiley face should have different eyes and a different mouth. Check out the example image below for reference.</li><li><strong>Hint:</strong> The second smiley face is partially complete. You could finish it off yourself, or you could copy and paste the first smiley face and change just the eyes and mouth much faster!</li></ul><h2>Example</h2><p>Below is an example of how the program should run:</p><p style="text-align:center;"><a href="https://year7.io/wp-content/uploads/2020/10/0202-super-smiley-face.png" target="_blank"><img src="https://year7.io/wp-content/uploads/2020/10/0202-super-smiley-face.png" ></a></p></div></div>    
+    <div id="spinner" class="sk-chase">
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+    </div>
+    <iframe id = "editor" class = "editorframe" width = "90%" height = 700 allow='clipboard-write' allowFullScreen style="display:none;"></iframe>
+  </div>  
+  <script>
+    //document.getElementById("editor").height = Math.max(screen.height - 270, 580) + "px";  
+  </script>
+    </body>
+</html>
