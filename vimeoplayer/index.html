@@ -2,12 +2,19 @@
 <head>
   <title>CS in Schools Vimeo Player</title>
   <style type="text/css" media="screen">
+        #overlay_ {
+          position: absolute;
+          left: 5%;
+          width: 90%;
+          height: 100%;
+          background-color: rgba(255, 255, 255, 0.5);
+        }
         .sk-chase {
           width: 80px;
           height: 80px;
           position: absolute;
           animation: sk-chase 2.5s infinite linear both;
-          top: calc(50% - 40px);
+          top: 80px;
           left: calc(50% - 40px);
         }
         .sk-chase-dot {
@@ -60,7 +67,8 @@
     <!--<input type="button" id="play_pause" value="Play" onclick="play_pause();">-->
     <input type="button" id="next" value="Next >>" onclick="nextSlide();">
   </div>
-  <div id = "playerContainter" style = "text-align: center;" width = "1024" height = "720">
+  <div id = "playerContainter" style = "text-align: center;">
+  <div id = "overlay"></div>
   <div id="spinner" class="sk-chase">
     <div class="sk-chase-dot"></div>
     <div class="sk-chase-dot"></div>
