@@ -98,7 +98,7 @@
     var spinner = document.getElementById("spinner");
     var player = null;
     
-    spinner.style.display= "none";
+    spinner.style.display= "block";
 
     function enableVimeo()
     {
@@ -116,10 +116,15 @@
 
       player = new Vimeo.Player('vimeoplayer', options);
 
+      player.on('loaded', function() {
+        gotoSlideTime(0.1);
+      });
+
       player.pause().then(function() {
         playerIFrame = document.getElementsByTagName("iframe");
         playerIFrame[0].style.width = "100%";
-        playerIFrame[0].style.height = "100%";        
+        playerIFrame[0].style.height = "100%";   
+           
       });
       player.on('play', function() {
         player.getVolume().then(function(volume) {
