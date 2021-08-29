@@ -1,7 +1,17 @@
 <html>
 <head>
   <title>CS in Schools Vimeo Player</title>
+  <link rel="preload" as="image" href="../images/next_on.png">
+  <link rel="preload" as="image" href="../images/next_off.png">
+  <link rel="preload" as="image" href="../images/prev_on.png">
+  <link rel="preload" as="image" href="../images/prev_off.png">
   <style type="text/css" media="screen">
+        #next_btn:hover {
+          background-image: url("../images/next_on.png");
+        }
+        #prev_btn:hover {
+          background-image: url("../images/next_on.png");
+        }
         #overlay_ {
           position: absolute;
           left: 5%;
@@ -63,9 +73,9 @@
 </head>
 <body onload="enableVimeo()">
   <div id = "controls" style = "text-align: center;">
-    <input type="button" id="prev" value="<< Prev" onclick="prevSlide();">
+    <input type="image" src="../images/prev_off.png" id="prev_btn" value="<< Prev" onclick="prevSlide();" onMouseOver="this.src='../images/prev_on.png'" onMouseOut="this.src='../images/prev_off.png'" onMouseDown="this.src='../images/prev_off.png'" onMouseUp="this.src='../images/prev_on.png'">
     <!--<input type="button" id="play_pause" value="Play" onclick="play_pause();">-->
-    <input type="button" id="next" value="Next >>" onclick="nextSlide();">
+    <input type="image" id="next_btn" src="../images/next_off.png" value="Next >>" onclick="nextSlide();" onMouseOver="this.src='../images/next_on.png'" onMouseOut="this.src='../images/next_off.png'" onMouseDown="this.src='../images/next_off.png'" onMouseUp="this.src='../images/next_on.png'">
   </div>
   <div id = "playerContainter" style = "text-align: center;">
   <div id = "overlay"></div>
@@ -117,7 +127,7 @@
       player = new Vimeo.Player('vimeoplayer', options);
 
       player.on('loaded', function() {
-        gotoSlideTime(0.1);
+        gotoSlideTime(parseFloat(times[0]) + 0.1);
       });
 
       player.pause().then(function() {
@@ -158,7 +168,7 @@
       for (i = times.length - 1; i >= 0 ; i--)
       {
         if (currentTime > times[i])
-        {
+        {          
           return times[i];
         }
       }
@@ -194,9 +204,16 @@
         currentTime = seconds;
         slideTimeMark = getNextTimeMark(currentTime);
         if (slideTimeMark != -1)
-        {
+        {                 
           gotoSlideTime(slideTimeMark);
+          document.getElementById("next_btn").style.visibility = "visible";   
         }
+        if (slideTimeMark == times[times.length-1])
+        {        
+          document.getElementById("next_btn").style.visibility = "hidden";
+        }
+        document.getElementById("prev_btn").style.visibility = "visible";
+
       });      
     }
 
@@ -207,9 +224,15 @@
         currentTime = seconds;
         slideTimeMark = getPrevTimeMark(currentTime);
         if (slideTimeMark != -1)
-        {
+        {            
           gotoSlideTime(slideTimeMark);
+          document.getElementById("prev_btn").style.visibility = "visible";  
         }
+        if (slideTimeMark == times[0])
+        {
+          document.getElementById("prev_btn").style.visibility = "hidden";  
+        }
+        document.getElementById("next_btn").style.visibility = "visible";
       });      
     }
   </script>
