@@ -458,17 +458,27 @@
         
         function saveToLocalStorage()
         {
+          try {
             var code = ace.edit("editor").getValue();
             localStorage.setItem(filename, code);
+          }
+          catch(e) {
+            console.log("Unable to save to local storage");
+          }
         }
         
         
         function loadFromLocalStorage()
         {
+          try {
             var src = localStorage.getItem(filename);
             if (!(src === null || src == "")) {
                 editor.setValue(src, -1);
-            }        
+            }      
+          }
+          catch (e) {
+            console.log("Unable to load from local storage");
+          }  
         }
         
         function userLoadCode(event) {
