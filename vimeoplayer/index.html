@@ -6,6 +6,29 @@
   <link rel="preload" as="image" href="../images/prev_on.png">
   <link rel="preload" as="image" href="../images/prev_off.png">
   <style type="text/css" media="screen">
+        .body {
+          display:flex;
+          flex-direction:column;
+          align-items:center;          
+        }
+        .container {
+          flex:1 1 100vh;
+            display:flex;
+            flex-direction: column; 
+             width:100vw;  
+        }        
+        .playerContainter {
+          display:flex;
+          flex-direction:row;
+          flex: 0 0 auto;
+        }
+        .vimeoplayer {
+          flex:1 1  auto;
+          flex-direction: column;
+          display:flex;
+          //min-height:0;
+          overflow:hidden;
+        }
         #next_btn:hover {
           background-image: url("../images/next_on.png");
         }
@@ -72,23 +95,25 @@
     </style>
 </head>
 <body onload="enableVimeo()">
-  <div id = "controls" style = "text-align: center;">
-    <input type="image" src="../images/prev_off.png" id="prev_btn" value="<< Prev" onclick="prevSlide();" onMouseOver="this.src='../images/prev_on.png'" onMouseOut="this.src='../images/prev_off.png'" onMouseDown="this.src='../images/prev_off.png'" onMouseUp="this.src='../images/prev_on.png'">
-    <!--<input type="button" id="play_pause" value="Play" onclick="play_pause();">-->
-    <input type="image" id="next_btn" src="../images/next_off.png" value="Next >>" onclick="nextSlide();" onMouseOver="this.src='../images/next_on.png'" onMouseOut="this.src='../images/next_off.png'" onMouseDown="this.src='../images/next_off.png'" onMouseUp="this.src='../images/next_on.png'">
-  </div>
-  <div id = "playerContainter" style = "text-align: center;">
-  <div id = "overlay"></div>
-  <div id="spinner" class="sk-chase">
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-    <div class="sk-chase-dot"></div>
-  </div>    
-  <div id="vimeoplayer"></div>
-  <!--<iframe src="https://player.vimeo.com/video/587069589?autoplay=1&muted=1" width="100%"  height = "100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>-->
+  <div id="container">
+    <div id = "controls" style = "text-align: center;">
+      <input type="image" src="../images/prev_off.png" id="prev_btn" value="<< Prev" onclick="prevSlide();" onMouseOver="this.src='../images/prev_on.png'" onMouseOut="this.src='../images/prev_off.png'" onMouseDown="this.src='../images/prev_off.png'" onMouseUp="this.src='../images/prev_on.png'">
+      <!--<input type="button" id="play_pause" value="Play" onclick="play_pause();">-->
+      <input type="image" id="next_btn" src="../images/next_off.png" value="Next >>" onclick="nextSlide();" onMouseOver="this.src='../images/next_on.png'" onMouseOut="this.src='../images/next_off.png'" onMouseDown="this.src='../images/next_off.png'" onMouseUp="this.src='../images/next_on.png'">
+    </div>
+    <div id = "playerContainter">
+    <div id = "overlay"></div>
+    <div id="spinner" class="sk-chase">
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+      <div class="sk-chase-dot"></div>
+    </div>    
+    <div id="vimeoplayer"></div>
+    <!--<iframe src="https://player.vimeo.com/video/587069589?autoplay=1&muted=1" width="100%"  height = "100%" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen ></iframe>-->
+    </div>
   </div>
   <script src="https://player.vimeo.com/api/player.js"></script>
   <script>
@@ -109,6 +134,25 @@
     var player = null;
     
     spinner.style.display= "block";
+
+    window.addEventListener('resize', resizePlayer);
+
+    function getPlayerSize(w, h)
+    {
+      ratio = 16.0 / 9;
+      size = [w, w / ratio];
+      return size;
+    }
+
+    function resizePlayer()
+    {
+      playerIFrame = document.getElementsByTagName("iframe");     
+
+      size = getPlayerSize(playerIFrame[0].parentNode.clientWidth, playerIFrame[0].parentNode.clientHeight);
+
+      playerIFrame[0].width = size[0];
+      playerIFrame[0].height = size[1];      
+    }
 
     function enableVimeo()
     {
@@ -131,10 +175,7 @@
       });
 
       player.pause().then(function() {
-        playerIFrame = document.getElementsByTagName("iframe");
-        playerIFrame[0].style.width = "100%";
-        playerIFrame[0].style.height = "100%";   
-           
+        resizePlayer();           
       });
       player.on('play', function() {
         player.getVolume().then(function(volume) {
