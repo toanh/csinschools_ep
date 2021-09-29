@@ -177,11 +177,20 @@
       player.pause().then(function() {
         resizePlayer();           
       });
+
       player.on('play', function() {
         player.getVolume().then(function(volume) {
           player.setVolume(1.0);
         });
-      });      
+      });     
+
+      // pause at the end - don't show the outro
+      player.on('timeupdate', function(event) {
+        if (event["percent"] >= 0.995)
+        {
+          player.pause();
+        }
+      }); 
     }
     var play = true;
     function play_pause()
